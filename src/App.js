@@ -5,7 +5,7 @@ import './App.css';
 function App() {
   const [reportText, setReportText] = useState('');
   const [interpretedReportText, setInterpretedReportText] = useState('');
-  const [chatGPTApiKey, setChatGPTApiKey] = useState('sk-hpX8BXe5xJNSuUrImN53T3BlbkFJva5fvmNvBR1jRkHAPexuY');
+  const [chatGPTApiKey, setChatGPTApiKey] = useState('');
 
   const handleFileSubmit = async (event) => {
     event.preventDefault();
