@@ -1,11 +1,15 @@
+
 import React, { useState } from 'react';
 import Tesseract from 'tesseract.js';
 import './App.css';
 
+require('dotenv').config();
+
+
 function App() {
   const [reportText, setReportText] = useState('');
   const [interpretedReportText, setInterpretedReportText] = useState('');
-  const [chatGPTApiKey, setChatGPTApiKey] = useState('');
+  const [chatGPTApiKey, setChatGPTApiKey] = useState(process.env.REACT_APP_CHATGPT_API_KEY);
 
   const handleFileSubmit = async (event) => {
     event.preventDefault();
