@@ -1,8 +1,5 @@
 # Doctalyzer
 Doctalyzer is a web application designed to help patients better understand their medical reports. With Doctalyzer, you can upload medical reports in various formats and receive an interpretation in simple language, making it easier to understand test results, diagnoses, and recommended treatments.
-<br/>
-[![GitHub issues](https://img.shields.io/github/issues/open-xyz/doctalyzer)](https://github.com/open-xyz/doctalyzer/issues)
-
 
 ## Features
 Doctalyzer offers the following features:
@@ -30,7 +27,8 @@ You can then upload your medical reports and receive an interpretation in simple
 4. Read the interpretation to better understand your medical report.
 
 ## License
-Doctalyzer is licensed under the MIT License. See <a href="https://github.com/open-xyz/doctalyzer/blob/main/LICENSE">LICENSE<a/> for more information.
+Doctalyzer is licensed under the [![License: MIT](https://badgen.net/github/license/open-xyz/doctalyzer)](https://github.com/open-xyz/doctalyzer/blob/main/LICENSE)
+. See <a href="https://github.com/open-xyz/doctalyzer/blob/main/LICENSE">LICENSE<a/> for more information.
 
 ## Contributing
 If you're interested in contributing to Doctalyzer, please see <a href="https://github.com/open-xyz/doctalyzer/blob/main/CONTRIBUTING.md">CONTRIBUTING.md <a/>  for guidelines on how to get started.
