@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import Tesseract from 'tesseract.js';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [image, setImage] = useState(null);
+  const [text, setText] = useState("");
+  const [result, setResult] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Convert the image to text using Tesseract OCR
+  const convertImageToText = async () => {
+    try {
+      setIsLoading(true); 
+      const { data } = await Tesseract.recognize(image, "eng");
+      const extractedText = data.text;
+      console.log(extractedText);
+      setText(extractedText);
+      setResult(extractedText);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // Handle image change event
+  const handleChangeImage = e => {
+    const selectedImage = e.target.files[0];
+    setImage(selectedImage);
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <h1>ImText</h1>
+      <p>Gets words in image!</p>
+      <div className="input-wrapper">
+        <label htmlFor="upload">Upload Image</label>
+        <input type="file" id="upload" accept="image/*" onChange={handleChangeImage} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      <div className="result">
+        <button onClick={convertImageToText}>Click</button>
+        <textarea value={text} readOnly></textarea>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      <div className="stored-result">
+        <h3>Stored Result:</h3>
+        {/* Display a loading message while the result is being processed */}
+        {isLoading ? (
+          <p>Wait for a few seconds...</p>
+        ) : (
+          <p>{result}</p>
+        )}
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
