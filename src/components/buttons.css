@@ -1,0 +1,10 @@
+.button-img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+
+	width: 8rem;
+}
+.button-img:hover{
+	transition: ease-in;
+}

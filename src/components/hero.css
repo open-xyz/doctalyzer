@@ -1,0 +1,17 @@
+.logo {
+	width: 12rem;
+}
+
+@media screen and (min-width: 600px) {
+	.description {
+		font-size: 2rem;
+		line-height: 2rem;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.description {
+		font-size: 1.3rem;
+		line-height: 1.5rem;
+	}
+}
