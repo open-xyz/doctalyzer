@@ -3,16 +3,15 @@ import Footer from "./Footer"
 import Nav from "./Nav"
 import { Configuration, OpenAIApi } from "openai"
 
-const API_KEY = ""
-
+const API_KEY = "---------------"
 const openai = new OpenAIApi(
 	new Configuration({
-		apiKey: "",
+		apiKey: "--------------------",
 	})
 )
 
 const answer =
-	"give patient name , age , and report  summary  in 20 words in very simple term"
+	"Interpret this given ocr extracted data into laymen terms that even a child can understand just make sure to exclude name, age, location or similar data from the given data just interpret diagnosed medical report and provide summary in 100 words.And also give future implications and precautions to take and mention its seriousness"
 
 export default function Ocr() {
 	const [image, setImage] = useState(null)
@@ -124,7 +123,7 @@ export default function Ocr() {
 				<Nav />
 			</div>
 			<div className='flex flex-col items-center w-full max-w-xl p-12 mx-auto rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg'>
-				<form className='grid gap-6 w-full'>
+				<form className='grid gap-3 w-full'>
 					<div>
 						<div className='space-y-1 mb-4'>
 							<h2 className='text-xl font-semibold'>Upload a file</h2>
@@ -191,12 +190,13 @@ export default function Ocr() {
 
 			<div className='mt-10'>
 				<div
-					className='flex flex-col items-center w-full max-w-xl p-12 mx-auto rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg'
+					className='flex flex-col items-center w-full max-w-xl py-12 mx-auto rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg'
 					style={{ padding: "0" }}
 				>
-					<div className='mx-20'>
-						<div className='space-y-5 mb-4 mt-4 mx-20'>
+					<div className='mx-20 mb-6'>
+						<div className=' mb-4 mt-5 mx-32 w-full'>
 							<h2 className='text-xl font-semibold '>Interpreted Report</h2>
+							<br />
 						</div>
 						<div className='stored-result'>
 							{/* Display a loading message while the result is being processed */}
