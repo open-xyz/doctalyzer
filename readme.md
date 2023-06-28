@@ -16,19 +16,20 @@ Doctalyzer offers the following features:
 
 ## Getting Started
 
-To get started with Doctalyzer, simply navigate to the following `<a href="https://doctalyzer.vercel.app/">`link`</a>`.
+To get started with Doctalyzer, simply navigate to the following `<a href="https://doctalyzer.vercel.app/">`link `</a>`.
 `<br />`
 You can then upload your medical reports and receive an interpretation in simple language.
 
 ## Installation
 
-1. Clone the Doctalyzer `<a href="https://github.com/open-xyz/doctalyzer">`repository`<a/>` to your local machine
+1. Clone the Doctalyzer `<a href="https://github.com/open-xyz/doctalyzer">`repository `<a/>` to your local machine
 2. Install the required dependencies by running npm install.
-3. Start the server by running npm start.
+3. Create a `.env` file in root and add API Keys from `<a href="https://platform.openai.com/account/api-keys">OpenAI<a/>` & ``<a href="https://console.cloud.google.com/vision/">`Google Vison OCR `<a/>`
+4. Start the server by running `npm run dev`.
 
 ## Usage
 
-1. Navigate to the Doctalyzer `<a href="https://doctalyzer.vercel.app/">`web application`<a/>`.
+1. Navigate to the Doctalyzer `<a href="https://doctalyzer.vercel.app/">`web application `<a/>`.
 2. Upload your file by clicking on the choose file button.
 3. Click on the submit button and Wait for the text extraction and natural language interpretation to complete.
 4. Read the interpretation to better understand your medical report.
@@ -36,7 +37,7 @@ You can then upload your medical reports and receive an interpretation in simple
 ## License
 
 Doctalyzer is licensed under the [![License: MIT](https://badgen.net/github/license/open-xyz/doctalyzer)](https://github.com/open-xyz/doctalyzer/blob/main/LICENSE)
-. See `<a href="https://github.com/open-xyz/doctalyzer/blob/main/LICENSE">`LICENSE`<a/>` for more information.
+. See `<a href="https://github.com/open-xyz/doctalyzer/blob/main/LICENSE">`LICENSE `<a/>` for more information.
 
 ## Contributing
 
