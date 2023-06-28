@@ -24,7 +24,7 @@ You can then upload your medical reports and receive an interpretation in simple
 
 1. Clone the Doctalyzer `<a href="https://github.com/open-xyz/doctalyzer">`repository `<a/>` to your local machine
 2. Install the required dependencies by running npm install.
-3. Create a `.env` file in root and add API Keys from `<a href="https://platform.openai.com/account/api-keys">OpenAI<a/>` & ``<a href="https://console.cloud.google.com/vision/">`Google Vison OCR `<a/>`
+3. Create a `.env` file in root and add API Keys from `<a href="https://platform.openai.com/account/api-keys">OpenAI<a/>` & ``<a href="https://console.cloud.google.com/vision/">Google Vison OCR `<a/>``
 4. Start the server by running `npm run dev`.
 
 ## Usage
