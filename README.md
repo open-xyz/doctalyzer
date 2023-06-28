@@ -1,6 +1,10 @@
 # Doctalyzer
 Doctalyzer is a web application designed to help patients better understand their medical reports. With Doctalyzer, you can upload medical reports in various formats and receive an interpretation in simple language, making it easier to understand test results, diagnoses, and recommended treatments.
 
+## Screenshot
+
+![Screenshot of my app](https://i.imgur.com/podHC32.jpeg)
+
 ## Features
 Doctalyzer offers the following features:
 
@@ -18,7 +22,8 @@ You can then upload your medical reports and receive an interpretation in simple
 ## Installation
 1. Clone the Doctalyzer <a href="https://github.com/open-xyz/doctalyzer">repository<a/> to your local machine
 2. Install the required dependencies by running npm install.
-3. Start the server by running npm start.
+3. Create a `.env` file in root and add API Keys from <a href="https://platform.openai.com/account/api-keys">`OpenAI`<a/> & <a href="https://console.cloud.google.com/vision/">`Google Vison OCR`<a/>
+4. Start the server by running `npm run dev`.
   
 ## Usage
 1. Navigate to the Doctalyzer <a href="https://doctalyzer.vercel.app/">web application<a/>.
