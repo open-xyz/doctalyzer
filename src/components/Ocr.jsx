@@ -1,63 +1,63 @@
-import React, { useState } from "react"
-import Footer from "./Footer"
-import Nav from "./Nav"
-import { Configuration, OpenAIApi } from "openai"
+import React, { useState } from "react";
+import Footer from "./Footer";
+import Nav from "./Nav";
+import { Configuration, OpenAIApi } from "openai";
 
-const API_KEY = "---------------"
+const API_KEY = `${import.meta.env.VITE_OCR}`;
 const openai = new OpenAIApi(
 	new Configuration({
-		apiKey: "--------------------",
+		apiKey: `${import.meta.env.VITE_OPENAI}`,
 	})
-)
+);
 
 const answer =
-	"Interpret this given ocr extracted data into laymen terms that even a child can understand just make sure to exclude name, age, location or similar data from the given data just interpret diagnosed medical report and provide summary in 100 words.And also give future implications and precautions to take and mention its seriousness"
+	"Interpret this given ocr extracted data into laymen terms that even a child can understand just make sure to exclude name, age, location or similar data from the given data just interpret diagnosed medical report and provide summary in 100 words.And also give future implications and precautions to take and mention its seriousness";
 
 export default function Ocr() {
-	const [image, setImage] = useState(null)
-	const [text, setText] = useState("")
-	const [result, setResult] = useState("")
-	const [isLoading, setIsLoading] = useState(false)
-	const [responseContent, setResponseContent] = useState("")
-	const [isGenerating, setIsGenerating] = useState(false)
+	const [image, setImage] = useState(null);
+	const [text, setText] = useState("");
+	const [result, setResult] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+	const [responseContent, setResponseContent] = useState("");
+	const [isGenerating, setIsGenerating] = useState(false);
 
 	const convertImageToText = async () => {
-		event.preventDefault()
+		event.preventDefault();
 		try {
-			setIsLoading(true)
-			setIsGenerating(true)
-			const base64Image = await convertImageToBase64(image)
-			const extractedText = await analyzeImage(base64Image)
-			console.log(extractedText) // Log the extracted text
-			setText(extractedText)
-			setResult(extractedText)
-			const response = await handleSendMessage(extractedText)
+			setIsLoading(true);
+			setIsGenerating(true);
+			const base64Image = await convertImageToBase64(image);
+			const extractedText = await analyzeImage(base64Image);
+			console.log(extractedText); // Log the extracted text
+			setText(extractedText);
+			setResult(extractedText);
+			const response = await handleSendMessage(extractedText);
 			if (
 				response &&
 				response.data &&
 				response.data.choices &&
 				response.data.choices.length > 0
 			) {
-				setResponseContent(response.data.choices[0]?.message?.content)
+				setResponseContent(response.data.choices[0]?.message?.content);
 			} else {
-				console.error("Invalid response format")
+				console.error("Invalid response format");
 			}
 		} catch (err) {
-			console.log(err)
+			console.log(err);
 		} finally {
-			setIsLoading(false)
-			setIsGenerating(false)
+			setIsLoading(false);
+			setIsGenerating(false);
 		}
-	}
+	};
 
 	const convertImageToBase64 = (image) => {
 		return new Promise((resolve, reject) => {
-			const reader = new FileReader()
-			reader.onload = () => resolve(reader.result.split(",")[1])
-			reader.onerror = (error) => reject(error)
-			reader.readAsDataURL(image)
-		})
-	}
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result.split(",")[1]);
+			reader.onerror = (error) => reject(error);
+			reader.readAsDataURL(image);
+		});
+	};
 
 	const analyzeImage = (base64Image) => {
 		const body = JSON.stringify({
@@ -74,7 +74,7 @@ export default function Ocr() {
 					],
 				},
 			],
-		})
+		});
 
 		return fetch(
 			`https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`,
@@ -88,13 +88,14 @@ export default function Ocr() {
 		)
 			.then((response) => response.json())
 			.then((data) => {
-				const extractedText = data.responses[0]?.textAnnotations[0]?.description
-				return extractedText || "No text found."
+				const extractedText =
+					data.responses[0]?.textAnnotations[0]?.description;
+				return extractedText || "No text found.";
 			})
 			.catch((error) => {
-				console.error("Error:", error)
-			})
-	}
+				console.error("Error:", error);
+			});
+	};
 
 	const handleSendMessage = async (message) => {
 		try {
@@ -104,18 +105,18 @@ export default function Ocr() {
 					{ role: "system", content: "You" },
 					{ role: "user", content: message + answer },
 				],
-			})
+			});
 
-			return response
+			return response;
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
-	}
+	};
 
 	const handleChangeImage = (event) => {
-		const selectedImage = event.target.files[0]
-		setImage(selectedImage)
-	}
+		const selectedImage = event.target.files[0];
+		setImage(selectedImage);
+	};
 
 	return (
 		<>
@@ -213,5 +214,5 @@ export default function Ocr() {
 			</div>
 			<Footer />
 		</>
-	)
+	);
 }

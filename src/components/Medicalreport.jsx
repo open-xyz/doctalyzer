@@ -1,40 +1,40 @@
-import React, { useState } from "react"
-import { Configuration, OpenAIApi } from "openai"
-import Nav from "./Nav"
-import Footer from "./Footer"
+import React, { useState } from "react";
+import { Configuration, OpenAIApi } from "openai";
+import Nav from "./Nav";
+import Footer from "./Footer";
 
 const openai = new OpenAIApi(
 	new Configuration({
-		apiKey: "--------------------",
+		apiKey: `${import.meta.env.VITE_OPENAI}`,
 	})
-)
+);
 
 const message = `Generate a JSON representation of about result. The JSON should include the following fields: 
 "Uses", 
 "Dosage", 
 "Side Effects", 
 "Route",
-"Disclaimer" `
+"Disclaimer" `;
 
 function Medicalreport() {
-	const [inputMessage, setInputMessage] = useState("")
-	const [isGenerating, setIsGenerating] = useState(false)
-	const [resultJSON, setResultJSON] = useState(null)
-	const [error, setError] = useState(null)
+	const [inputMessage, setInputMessage] = useState("");
+	const [isGenerating, setIsGenerating] = useState(false);
+	const [resultJSON, setResultJSON] = useState(null);
+	const [error, setError] = useState(null);
 
 	const handleInputChange = (event) => {
-		setInputMessage(event.target.value)
-	}
+		setInputMessage(event.target.value);
+	};
 
 	const handleMedicineClick = (event) => {
-		const medicineName = event.target.innerHTML
-		setInputMessage(medicineName)
-		convertImageToText()
-	}
+		const medicineName = event.target.innerHTML;
+		setInputMessage(medicineName);
+		convertImageToText();
+	};
 
 	const convertImageToText = async () => {
-		setIsGenerating(true)
-		setError(null)
+		setIsGenerating(true);
+		setError(null);
 		try {
 			const response = await openai.createChatCompletion({
 				model: "gpt-3.5-turbo",
@@ -42,16 +42,16 @@ function Medicalreport() {
 					{ role: "system", content: "You" },
 					{ role: "user", content: inputMessage + message },
 				],
-			})
-			const content = response.data.choices[0].message.content
-			console.log("Content:", content)
-			setResultJSON(JSON.parse(content))
+			});
+			const content = response.data.choices[0].message.content;
+			console.log("Content:", content);
+			setResultJSON(JSON.parse(content));
 		} catch (error) {
-			console.error(error)
-			setError("Error occurred during generation")
+			console.error(error);
+			setError("Error occurred during generation");
 		}
-		setIsGenerating(false)
-	}
+		setIsGenerating(false);
+	};
 
 	return (
 		<>
@@ -165,7 +165,7 @@ function Medicalreport() {
 			</div>
 			<Footer />
 		</>
-	)
+	);
 }
 
-export default Medicalreport
+export default Medicalreport;
