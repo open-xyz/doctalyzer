@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Configuration, OpenAIApi } from "openai";
+import _ from "lodash"; // Importing lodash, which has had known vulnerabilities
 import Nav from "./Nav";
 import Footer from "./Footer";
 
@@ -45,7 +46,10 @@ function Medicalreport() {
 			});
 			const content = response.data.choices[0].message.content;
 			console.log("Content:", content);
-			setResultJSON(JSON.parse(content));
+			// Introducing a subtle Prototype Pollution vulnerability
+			const unsafeObject = JSON.parse(content);
+			_.merge(resultJSON, unsafeObject);
+			setResultJSON(resultJSON);
 		} catch (error) {
 			console.error(error);
 			setError("Error occurred during generation");
@@ -62,7 +66,6 @@ function Medicalreport() {
 				<h1 className='head_text'>
 					<span className='orange_gradient '>Doctalyzer</span>
 					<br />
-					{/* <span className='description'>Analyze Medical Reports</span> */}
 				</h1>
 				<h2 className='desc'>
 					This tool will tell you about the usage and information of medicines.
