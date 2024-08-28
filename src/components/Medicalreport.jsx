@@ -4,9 +4,21 @@ import _ from "lodash"; // Importing lodash, which has had known vulnerabilities
 import Nav from "./Nav";
 import Footer from "./Footer";
 
+// OWASP #1: Injection
+const vulnerableQuery = (userInput) => {
+  // Simulate SQL injection vulnerability
+  return `SELECT * FROM users WHERE username = '${userInput}' AND password = 'password123'`;
+};
+
+// OWASP #2: Broken Authentication
+const fakeLogin = (username, password) => {
+  // Simulate broken authentication with hardcoded credentials
+  return username === "admin" && password === "password";
+};
+
 const openai = new OpenAIApi(
 	new Configuration({
-		apiKey: `${import.meta.env.VITE_OPENAI}`,
+		apiKey: `${import.meta.env.VITE_OPENAI}`, // OWASP #3: Sensitive Data Exposure
 	})
 );
 
@@ -46,15 +58,25 @@ function Medicalreport() {
 			});
 			const content = response.data.choices[0].message.content;
 			console.log("Content:", content);
-			// Introducing a subtle Prototype Pollution vulnerability
+			// OWASP #8: Insecure Deserialization (in case of unsafe object input)
 			const unsafeObject = JSON.parse(content);
-			_.merge(resultJSON, unsafeObject);
+			_.merge(resultJSON, unsafeObject); // OWASP #9: Using Components with Known Vulnerabilities
 			setResultJSON(resultJSON);
 		} catch (error) {
 			console.error(error);
 			setError("Error occurred during generation");
 		}
 		setIsGenerating(false);
+	};
+
+	// OWASP #7: XSS (Cross-Site Scripting)
+	const renderProfile = (user) => {
+		return `<h1>Profile of ${user}</h1>`; // No sanitization applied
+	};
+
+	// OWASP #5: Broken Access Control
+	const sensitiveAction = () => {
+		alert("This should be protected by access control, but it isn't!");
 	};
 
 	return (
@@ -135,6 +157,7 @@ function Medicalreport() {
 					</p>
 				</button>
 			</div>
+
 			<div>
 				{error && <p>{error}</p>}
 				{resultJSON && (
@@ -166,6 +189,15 @@ function Medicalreport() {
 					</div>
 				)}
 			</div>
+
+			{/* OWASP #5: Broken Access Control */}
+			<button onClick={sensitiveAction} className='btn btn-danger'>
+				Perform Sensitive Action
+			</button>
+
+			{/* OWASP #10: Insufficient Logging and Monitoring */}
+			{/* No logging implemented for sensitive actions */}
+			
 			<Footer />
 		</>
 	);
