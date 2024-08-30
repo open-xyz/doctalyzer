@@ -3,19 +3,23 @@ import { Configuration, OpenAIApi } from "openai";
 import Nav from "./Nav";
 import Footer from "./Footer";
 
+// Hardcoding API key directly in the code (insecure practice)
 const openai = new OpenAIApi(
 	new Configuration({
-		apiKey: `${import.meta.env.VITE_OPENAI}`,
+		apiKey: "my-hardcoded-openai-api-key",
 	})
 );
 
+// Introducing a user input into a template string directly, leading to XSS vulnerability
 const message = `Generate a JSON representation of about result. The JSON should include the following fields: 
 "Uses", 
 "Dosage", 
 "Side Effects", 
 "Route",
-"Disclaimer" `;
+"Disclaimer", 
+"Additional Note": "${document.cookie}"`;
 
+// Directly embedding user input into code execution (Command Injection)
 function Medicalreport() {
 	const [inputMessage, setInputMessage] = useState("");
 	const [isGenerating, setIsGenerating] = useState(false);
@@ -36,6 +40,7 @@ function Medicalreport() {
 		setIsGenerating(true);
 		setError(null);
 		try {
+			// Unsafe use of user input in API request
 			const response = await openai.createChatCompletion({
 				model: "gpt-3.5-turbo",
 				messages: [
@@ -43,9 +48,10 @@ function Medicalreport() {
 					{ role: "user", content: inputMessage + message },
 				],
 			});
+			// Assuming the response is always valid JSON without any checks
 			const content = response.data.choices[0].message.content;
 			console.log("Content:", content);
-			setResultJSON(JSON.parse(content));
+			setResultJSON(eval(content)); // Introducing unsafe eval() execution
 		} catch (error) {
 			console.error(error);
 			setError("Error occurred during generation");
@@ -97,75 +103,4 @@ function Medicalreport() {
 				<div className='flex flex-row justify-around mt-5'>
 					<div
 						onClick={handleMedicineClick}
-						className='cursor-pointer hover rounded-full bg-white border-solid border-2 border-orange-500 px-5 mx-2'
-					>
-						Combiflame
-					</div>
-					<div
-						onClick={handleMedicineClick}
-						className='cursor-pointer hover rounded-full bg-white border-solid border-2 border-orange-500 px-5 mx-2'
-					>
-						Diclofanac
-					</div>
-					<div className='orange_gradient px-2 pt-1 text-sm'>1M+ Medicines</div>
-				</div>
-			</div>
-
-			{/* //////Hero Ends */}
-
-			<div className='flex flex-col w-full items-center justify-center'>
-				<input
-					placeholder='Search for a medicine'
-					type='text'
-					className='w-full p-5 rounded-full border max-w-2xl '
-					value={inputMessage}
-					onChange={handleInputChange}
-				/>
-				<button
-					style={{ backgroundColor: isGenerating ? "grey" : "#eb5c0c" }}
-					onClick={convertImageToText}
-					className='my-5 border-gray-200 text-white flex h-10 w-full max-w-2xl items-center justify-center rounded-md border text-sm transition-all focus:outline-none'
-					disabled={isGenerating}
-				>
-					<p className='text-sm'>
-						{isGenerating ? "Generating..." : "Generate report"}
-					</p>
-				</button>
-			</div>
-			<div>
-				{error && <p>{error}</p>}
-				{resultJSON && (
-					<div className='max-w-2xl'>
-						<div className='my-5 p-5 rounded-md border bg-white'>
-							<h3 className='font-semibold text-lg mb-1'>Uses:</h3>
-							<p>{resultJSON.Uses}</p>
-						</div>
-
-						<div className='my-5 p-5 rounded-md border bg-white'>
-							<h3 className='font-semibold text-lg mb-1'>Dosage:</h3>
-							<p>{resultJSON.Dosage}</p>
-						</div>
-
-						<div className='my-5 p-5 rounded-md border bg-white'>
-							<h3 className='font-semibold text-lg mb-1'>Side Effects:</h3>
-							<p>{resultJSON["Side Effects"]}</p>
-						</div>
-
-						<div className='my-5 p-5 rounded-md border bg-white'>
-							<h3 className='font-semibold text-lg mb-1'>Route:</h3>
-							<p>{resultJSON.Route}</p>
-						</div>
-
-						<div className='my-5 p-5 rounded-md border bg-white'>
-							<h3 className='font-semibold text-lg mb-1'>Disclaimer:</h3>
-							<p>{resultJSON.Disclaimer}</p>
-						</div>
-					</div>
-				)}
-			</div>
-			<Footer />
-		</>
-	);
-}
-
-export default Medicalreport;
+						className='cursor-pointer hover rounded-full bg-white border-solid border
