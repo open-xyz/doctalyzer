@@ -1,65 +1,59 @@
-vulnerable.js
-
 const express = require('express');
-const crypto = require('crypto');
-const mysql = require('mysql');
-const { exec } = require('child_process');
-const protobuf = require('protobufjs');
+const fs = require('fs');
+const vm = require('vm');
+const jwt = require('jsonwebtoken');
 
 const app = express();
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'testdb'
-});
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Vulnerable SQL Injection Endpoint
-app.get('/user/:id', (req, res) => {
-    const userId = req.params.id;
-    db.query(`SELECT * FROM users WHERE id = ${userId}`, (err, result) => {
-        if (err) throw err;
-        res.send(result);
-    });
+// Insecure Deserialization
+app.post('/deserialize', (req, res) => {
+    const serializedData = req.body.data;
+    try {
+        const deserializedData = JSON.parse(serializedData);
+        res.send(`Deserialized data: ${deserializedData}`);
+    } catch (e) {
+        res.status(400).send('Invalid data');
+    }
 });
 
-// Vulnerable Command Injection Endpoint
-app.post('/execute', (req, res) => {
-    const command = req.body.command;
-    exec(command, (err, stdout, stderr) => {
+// Cross-Site Scripting (XSS)
+app.get('/greet', (req, res) => {
+    const name = req.query.name;
+    res.send(`<h1>Hello, ${name}</h1>`);
+});
+
+// Insecure JWT Handling
+app.post('/login', (req, res) => {
+    const user = { id: 1, username: req.body.username };
+    const token = jwt.sign(user, 'secretkey'); // Weak secret
+    res.json({ token });
+});
+
+// Unsafe File Operations
+app.get('/read-file', (req, res) => {
+    const filename = req.query.filename;
+    fs.readFile(`/var/data/${filename}`, 'utf8', (err, data) => {
         if (err) {
-            res.status(500).send('Command execution failed');
+            res.status(500).send('File read error');
             return;
         }
-        res.send(`Command output: ${stdout}`);
+        res.send(`File content: ${data}`);
     });
 });
 
-// Vulnerable Hashing (Use of Outdated Cryptographic Practices)
-app.post('/hash', (req, res) => {
-    const password = req.body.password;
-    const hash = crypto.createHash('md5').update(password).digest('hex');
-    res.send(`Hashed password: ${hash}`);
-});
-
-// Vulnerable Proto Buffing (Prototype Pollution)
-app.post('/protobuf', async (req, res) => {
-    const root = await protobuf.load("example.proto");
-    const Message = root.lookupType("examplepackage.Message");
-
-    const payload = req.body;
-    const errMsg = Message.verify(payload);
-    if (errMsg) {
-        res.status(400).send(`Invalid message: ${errMsg}`);
-        return;
+// Server-Side JavaScript Injection
+app.post('/execute', (req, res) => {
+    const code = req.body.code;
+    try {
+        const result = vm.runInNewContext(code, {});
+        res.send(`Execution result: ${result}`);
+    } catch (e) {
+        res.status(500).send('Execution error');
     }
-
-    const message = Message.create(payload);
-    res.send(`Received message: ${JSON.stringify(message)}`);
 });
 
 app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+    console.log('Server running on port 3000');
 });
