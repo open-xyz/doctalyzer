@@ -47,6 +47,7 @@ app.get('/read-file', (req, res) => {
 app.post('/execute', (req, res) => {
     const code = req.body.code;
     try {
+        console.log("test");
         const result = vm.runInNewContext(code, {});
         res.send(`Execution result: ${result}`);
     } catch (e) {
