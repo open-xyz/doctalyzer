@@ -36,6 +36,7 @@ function Medicalreport() {
 		setIsGenerating(true);
 		setError(null);
 		try {
+			console.log("test");
 			const response = await openai.createChatCompletion({
 				model: "gpt-3.5-turbo",
 				messages: [
@@ -169,3 +170,4 @@ function Medicalreport() {
 }
 
 export default Medicalreport;
+
