@@ -169,3 +169,4 @@ function Medicalreport() {
 }
 
 export default Medicalreport;
+
